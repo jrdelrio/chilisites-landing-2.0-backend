@@ -1,0 +1,51 @@
+[
+  {
+    "slug": "post-prueba-1",
+    "title": "Título de blog de prueba 1",
+    "id_google": "1-1GhdzUPpF1UIDTKIFikmssWXSj92A1T",
+    "date": "2025-03-01",
+    "cover_google_id": ""
+  },
+  {
+    "slug": "post-prueba-2",
+    "title": "Título de blog de prueba 2",
+    "id_google": "1y0VfhFnTPBwPj9aEILnR2WRmyl-0YWY5",
+    "date": "2024-03-01",
+    "cover_google_id": ""
+  },
+  {
+    "slug": "tendencias-desarrollo-web",
+    "title": "Tendencias en desarrollo web para 2025",
+    "id_google": "1mWkK0ndGSiV-xAE943rtO-3cVQKeEV48",
+    "date": "2022-03-01",
+    "cover_google_id": ""
+  },
+  {
+    "slug": "seo-consejos-clave",
+    "title": "Consejos clave para mejorar tu SEO",
+    "id_google": "1ZfIx9s98D7YgYHfjtlNA-Duv834nWXDM",
+    "date": "2008-03-01",
+    "cover_google_id": ""
+  },
+  {
+    "slug": "mejorando-performance-web",
+    "title": "Cómo mejorar la performance de tu sitio web",
+    "id_google": "1A-eJgFsa6peFj9NqwzJdF8pkI95tkkk4",
+    "date": "2023-03-01",
+    "cover_google_id": ""
+  },
+  {
+    "slug": "shopify-vs-woocommerce",
+    "title": "Comparativa: Shopify vs WooCommerce, ¿cuál elegir?",
+    "id_google": "1XRJkzwFFTAutfCHcsWPveA9zUxa1Z2sH",
+    "date": "2025-03-05",
+    "cover_google_id": ""
+  },
+  {
+    "title": "primer post titulo",
+    "slug": "primer-post-de-prueba",
+    "id_google": "1z2nrADeKU8H9xnfwGZwtpZjCcjpSUL2r",
+    "date": "2025-03-07",
+    "cover_google_id": ""
+  }
+]
