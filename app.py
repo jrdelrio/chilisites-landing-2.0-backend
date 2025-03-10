@@ -2,11 +2,14 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import sqlite3
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///posts.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://chilisites.com"]}})
+
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3001,https://chilisites.com").split(",")
+CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS}})
 
 DB_NAME = "posts.db"
 
@@ -134,4 +137,4 @@ def delete_post(slug):
     return jsonify({"message": "Post eliminado exitosamente"}), 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
