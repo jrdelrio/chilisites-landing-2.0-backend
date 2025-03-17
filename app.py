@@ -141,14 +141,12 @@ def delete_post(slug):
     conn.close()
     return jsonify({"message": "Post eliminado exitosamente"}), 200
 
-# ✅ Endpoint para enviar emails con Resend
 @app.route("/send-email-thanks-for-contact", methods=["POST"])
 def send_email_to_leed():
     
     try:
         resend.api_key = os.environ["RESEND_API_KEY"]
         data = request.json
-        print(data)
         
         file_path = os.path.join(os.path.dirname(__file__), "templates", "email-to-possible-client.html")
         
@@ -159,7 +157,7 @@ def send_email_to_leed():
             email_template = email_template.replace("{{fromMessage}}", data.get("fromMessage", ""))
         
             params = {
-                 "from": "Equipo Chilisites <contacto@chilisites.com>",
+                "from": "Equipo Chilisites <contacto@chilisites.com>",
                 "to": request.json["fromEmail"],
                 "subject": "Muchas gracias por el contacto!",
                 "html": email_template
@@ -173,34 +171,41 @@ def send_email_to_leed():
 
 
     return {"email": email}
-    # data = request.json
-    # required_fields = ["to", "html"]
+
+@app.route("/send-email-to-chilisites", methods=["POST"])
+def send_email_to_chilisites():
+    try:
+        resend.api_key = os.environ["RESEND_API_KEY"]
+        data = request.json
+        
+        print(data)
+        
+        file_path = os.path.join(os.path.dirname(__file__), "templates", "email-to-chilisites.html")
+        
+        with open(file_path, "r", encoding="utf-8") as file:
+            email_template = file.read()
+            email_template = email_template.replace("{{fromName}}",               data.get("fromName", "➖"))
+            email_template = email_template.replace("{{fromEmail}}",              data.get("fromEmail", "➖"))
+            email_template = email_template.replace("{{fromPhone}}",              data.get("fromPhone", "➖"))
+            email_template = email_template.replace("{{fromType}}",               data.get("fromType", "➖"))
+            email_template = email_template.replace("{{fromSubscriptionStatus}}", "✅" if data.get("fromSubscriptionStatus") else "❌")
+            email_template = email_template.replace("{{fromMessage}}",            data.get("fromMessage", "➖"))
+            
+            params = {
+                "from": "contacto@chilisites.com",
+                "to": ["jrdelriodom@gmail.com", "francisca.campama@gmail.com", "contacto@chilisites.com"],
+                "subject": "Contacto Chilisites",
+                "html": email_template
+            }
+        
+        email = resend.Emails.send(params)
     
-    # if not all(field in data for field in required_fields):
-    #     return jsonify({"error": "Faltan datos requeridos en la solicitud"}), 400
-
-    # resend.api_key = os.environ["RESEND_API_KEY"]
-
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": str(e)}), 500
     
-    # if not resend.api_key:
-    #     return jsonify({"error": "Falta la API key de Resend"}), 500
-
-    # try:
-    #     # Envía la solicitud a la API de Resend
-    #     response = requests.post("https://api.resend.com/emails", json=data, headers=headers)
-    #     response_data = response.json()
-
-    #     if response.status_code >= 400:
-    #         return jsonify({"error": response_data}), response.status_code
-
-    #     return jsonify(
-    #         {
-    #             "data": response_data,
-    #             "message": "Email enviado!"   
-    #         }), 200
-
-    # except requests.exceptions.RequestException as e:
-    #     return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+    return {"email": email}
+        
     
 if __name__ == "__main__":
     app.run(debug=True)
