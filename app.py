@@ -178,7 +178,7 @@ def send_email_to_chilisites():
         resend.api_key = os.environ["RESEND_API_KEY"]
         data = request.json
         
-        print(data)
+        print(data.get("fromSubscriptionStatus"))
         
         file_path = os.path.join(os.path.dirname(__file__), "templates", "email-to-chilisites.html")
         
