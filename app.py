@@ -3,13 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import sqlite3
 import os
+import requests
+from dotenv import load_dotenv
+import resend
+
+load_dotenv();
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///posts.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3001,https://chilisites.com").split(",")
-CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS}})
+ALLOWED_ORIGINS = ["http://127.0.0.1:3000/", "https://chilisites.com"]
+cors = CORS(app, resources={r"/*": {"origins": "*"}}, credentials=True)
 
 DB_NAME = "posts.db"
 
@@ -23,7 +28,7 @@ def get_db_connection():
 db = SQLAlchemy(app)
 
 # Ruta de prueba
-@app.route("/", methods=["GET"])
+@app.route("/test-connection", methods=["GET"])
 def home():
     return jsonify({"message": "API de ChiliSites funcionando correctamente 🚀"})
 
@@ -136,5 +141,66 @@ def delete_post(slug):
     conn.close()
     return jsonify({"message": "Post eliminado exitosamente"}), 200
 
+# ✅ Endpoint para enviar emails con Resend
+@app.route("/send-email-thanks-for-contact", methods=["POST"])
+def send_email():
+    
+    try:
+        resend.api_key = os.environ["RESEND_API_KEY"]
+        data = request.json
+        print(data)
+        
+        file_path = os.path.join(os.path.dirname(__file__), "templates", "email-to-possible-client.html")
+        
+        with open(file_path, "r", encoding="utf-8") as file:
+            email_template = file.read()
+            email_template = email_template.replace("{{fromName}}", data.get("fromName", ""))
+            email_template = email_template.replace("{{fromEmail}}", data.get("fromEmail", ""))
+            email_template = email_template.replace("{{fromMessage}}", data.get("fromMessage", ""))
+        
+            params = {
+                 "from": "Equipo Chilisites <contacto@chilisites.com>",
+                "to": request.json["fromEmail"],
+                "subject": "Muchas gracias por el contacto!",
+                "html": email_template
+            }
+        
+        email = resend.Emails.send(params)
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+    return {"email": email}
+    # data = request.json
+    # required_fields = ["to", "html"]
+    
+    # if not all(field in data for field in required_fields):
+    #     return jsonify({"error": "Faltan datos requeridos en la solicitud"}), 400
+
+    # resend.api_key = os.environ["RESEND_API_KEY"]
+
+    
+    # if not resend.api_key:
+    #     return jsonify({"error": "Falta la API key de Resend"}), 500
+
+    # try:
+    #     # Envía la solicitud a la API de Resend
+    #     response = requests.post("https://api.resend.com/emails", json=data, headers=headers)
+    #     response_data = response.json()
+
+    #     if response.status_code >= 400:
+    #         return jsonify({"error": response_data}), response.status_code
+
+    #     return jsonify(
+    #         {
+    #             "data": response_data,
+    #             "message": "Email enviado!"   
+    #         }), 200
+
+    # except requests.exceptions.RequestException as e:
+    #     return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+    
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
