@@ -143,7 +143,7 @@ def delete_post(slug):
 
 # ✅ Endpoint para enviar emails con Resend
 @app.route("/send-email-thanks-for-contact", methods=["POST"])
-def send_email():
+def send_email_to_leed():
     
     try:
         resend.api_key = os.environ["RESEND_API_KEY"]
