@@ -13,7 +13,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///posts.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-cors = CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000/", "https://chilisites.com"]}}, credentials=True)
+CORS(app, resources={r"/*": {"origins": [
+    "http://127.0.0.1:3000/",
+    "http://localhost:3000/",
+    "https://chilisites.com"
+    ]}}, credentials=True)
 
 DB_NAME = "posts.db"
 
