@@ -5,3 +5,5 @@ __pycache__/
 venv/
 posts.sqlite3
 *.pem
+venv/
+.env
