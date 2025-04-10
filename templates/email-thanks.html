@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f4f7f6;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+
+            h1, h2, h3, p {
+                margin: 0 0 15px 0;
+            }
+
+            a {
+                color: #1d72b8;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .header {
+                text-align: center;
+                padding: 20px 0;
+            }
+
+            .header h1 {
+                font-size: 32px;
+                color: #2a3c4e;
+            }
+
+            .content {
+                font-size: 16px;
+                line-height: 1.6;
+                color: #444;
+            }
+
+            .cta {
+                background-color: #e03e2d;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-align: center;
+                display: block;
+                margin: 20px 0;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+            .cta:hover {
+                background-color: #c03526;
+            }
+
+            .footer {
+                text-align: center;
+                margin-top: 20px;
+                color: #aaa;
+                font-size: 12px;
+            }
+
+            .footer p {
+                margin: 5px 0;
+            }
+
+            .whatsapp-links {
+                margin-top: 20px;
+                list-style: none;
+                padding: 0;
+            }
+
+            .whatsapp-links li {
+                margin: 10px 0;
+            }
+
+            .whatsapp-links img {
+                vertical-align: middle;
+                margin-right: 8px;
+            }
+
+            .message {
+                font-size: 16px;
+                color: #e03e2d;
+            }
+
+            .logo {
+                margin-top: 30px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>¡Gracias por tu mensaje, {{fromName}}! 🙌</h1>
+            </div>
+            <div class="content">
+                <p>¡Nos alegra mucho saber de ti! En <strong>Chilisites</strong>, valoramos cada mensaje que recibimos. Tu opinión es importante para nosotros, y te responderemos a la brevedad.</p>
+
+                <p>Si vienes recomendado por alguien, ¡házmelo saber! Siempre es un placer conocer a nuevos amigos a través de recomendaciones. ❤️</p>
+
+                <p>Si no has recibido noticias nuestras en 24 horas en tu correo <strong>{{fromEmail}}</strong>, ¡no dudes en reclamar un 5% de descuento en tu próxima compra! 🎉</p>
+
+                <p>Si tienes alguna pregunta o inquietud mientras esperas nuestra respuesta, no dudes en volver a escribirnos. Nos encanta estar en contacto y hacer que tu experiencia con nosotros sea excepcional.</p>
+
+                <p>Además, te dejamos nuestros WhatsApp para que nos escribas directamente:</p>
+                <ul class="whatsapp-links">
+                    <li><a href="https://wa.me/56965669585" target="_blank"><img src="https://github.com/jrdelrio/chilisites-landing-2.0-backend/blob/main/templates/img/whatsapp-brands.png?raw=true" height="18" /> Marketing Digital</a></li>
+                    <li><a href="https://wa.me/56984138467" target="_blank"><img src="https://github.com/jrdelrio/chilisites-landing-2.0-backend/blob/main/templates/img/whatsapp-brands.png?raw=true" height="18" /> Desarrollo Web</a></li>
+                </ul>
+
+                <p>Gracias nuevamente por elegir <strong>Chilisites</strong>. Tu apoyo significa el mundo para nosotros. 🌎</p>
+
+                <p>Saludos cordiales,</p>
+                <p>--<br />El equipo de <strong>Chilisites</strong> 😎</p>
+            </div>
+
+            <div class="footer">
+                <div class="logo">
+                    <img src="https://github.com/jrdelrio/chilisites-landing-2.0-backend/blob/main/templates/img/logo-chilisites-fondo-solido.png?raw=true" height="80" alt="Chilisites Logo"/>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

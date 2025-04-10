@@ -13,8 +13,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///posts.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-ALLOWED_ORIGINS = ["http://127.0.0.1:3000/", "https://chilisites.com"]
-cors = CORS(app, resources={r"/*": {"origins": "*"}}, credentials=True)
+cors = CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000/", "https://chilisites.com"]}}, credentials=True)
 
 DB_NAME = "posts.db"
 
@@ -148,7 +147,7 @@ def send_email_to_leed():
         resend.api_key = os.environ["RESEND_API_KEY"]
         data = request.json
         
-        file_path = os.path.join(os.path.dirname(__file__), "templates", "email-to-possible-client.html")
+        file_path = os.path.join(os.path.dirname(__file__), "templates", "email-thanks.html")
         
         with open(file_path, "r", encoding="utf-8") as file:
             email_template = file.read()
@@ -208,4 +207,4 @@ def send_email_to_chilisites():
         
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5002)
