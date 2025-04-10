@@ -7,7 +7,7 @@ import requests
 from dotenv import load_dotenv
 import resend
 
-load_dotenv();
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///posts.db")
@@ -211,4 +211,4 @@ def send_email_to_chilisites():
         
     
 if __name__ == "__main__":
-    app.run(port=5002)
+    app.run(port=5000)
