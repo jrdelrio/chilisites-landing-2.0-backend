@@ -6,6 +6,7 @@ import os
 import requests
 from dotenv import load_dotenv
 import resend
+from datetime import datetime
 
 load_dotenv()
 
@@ -13,38 +14,33 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///posts.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-CORS(app, resources={r"/*": {"origins": [
-    "http://127.0.0.1:3000/",
-    "http://localhost:3000/",
-    "https://chilisites.com"
-    ]}}, credentials=True)
+# Permitir solicitudes de dominios específicos
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000/", "https://chilisites.com"]}}, credentials=True)
 
 DB_NAME = "posts.db"
 
+# Conexión a la base de datos
 def get_db_connection():
-    """Crea una conexión a la base de datos."""
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row
     return conn
-
 
 db = SQLAlchemy(app)
 
 # Ruta de prueba
 @app.route("/test-connection", methods=["GET"])
-def home():
+def test_connection():
     return jsonify({"message": "API de ChiliSites funcionando correctamente 🚀"})
 
-# ✅ Obtener todos los posts
+# Endpoint para obtener todos los posts
 @app.route("/posts", methods=["GET"])
 def get_posts():
     conn = get_db_connection()
     cursor = conn.cursor()
-    
     limit = request.args.get("limit", type=int)
     order = request.args.get("order", type=str, default="desc").lower()
     
-    # Validar el orden
+    # Validación de orden
     if order not in ["asc", "desc"]:
         order = "desc"
     
@@ -56,11 +52,7 @@ def get_posts():
     else:
         cursor.execute(query)
     
-    if limit:
-        posts = cursor.execute(query, (limit,)).fetchall()
-    else:
-        posts = cursor.execute(query).fetchall()
-    
+    posts = cursor.fetchall()
     conn.close()
     
     post_list = []
@@ -75,7 +67,7 @@ def get_posts():
 
     return jsonify([dict(post) for post in posts]), 200
 
-# ✅ Obtener un post por su slug
+# Obtener un post por su slug
 @app.route("/posts/<slug>", methods=["GET"])
 def get_post(slug):
     conn = get_db_connection()
@@ -87,8 +79,7 @@ def get_post(slug):
 
     return jsonify(dict(post)), 200
 
-
-# ✅ Crear un nuevo post
+# Crear un nuevo post
 @app.route("/posts", methods=["POST"])
 def create_post():
     data = request.json
@@ -109,7 +100,7 @@ def create_post():
     except sqlite3.IntegrityError:
         return jsonify({"error": "El slug o id_google ya existen"}), 400
 
-# ✅ Actualizar un post por su slug - ESTE ENDPOINT NO ESTA REVISADO
+# Actualizar un post
 @app.route("/posts/<slug>", methods=["PUT"])
 def update_post(slug):
     data = request.json
@@ -130,7 +121,7 @@ def update_post(slug):
     conn.close()
     return jsonify({"message": "Post actualizado exitosamente"}), 200
 
-# ✅ Eliminar un post por su slug
+# Eliminar un post
 @app.route("/posts/<slug>", methods=["DELETE"])
 def delete_post(slug):
     conn = get_db_connection()
@@ -146,21 +137,24 @@ def delete_post(slug):
 
 @app.route("/send-email-thanks-for-contact", methods=["POST"])
 def send_email_to_leed():
-    
     try:
         resend.api_key = os.environ["RESEND_API_KEY"]
         data = request.json
         
         file_path = os.path.join(os.path.dirname(__file__), "templates", "email-thanks.html")
         
+        # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         with open(file_path, "r", encoding="utf-8") as file:
             email_template = file.read()
-            email_template = email_template.replace("{{fromName}}", data.get("fromName", ""))
-            email_template = email_template.replace("{{fromEmail}}", data.get("fromEmail", ""))
-            email_template = email_template.replace("{{fromMessage}}", data.get("fromMessage", ""))
+            email_template = email_template.replace("{{from_name}}", data.get("fromName", ""))
+            # email_template = email_template.replace("{{from_email}}", data.get("fromEmail", ""))
+            # email_template = email_template.replace("{{from_message}}", data.get("fromMessage", ""))
+            # email_template = email_template.replace("{{from_phone}}", data.get("fromPhone", ""))
+            # email_template = email_template.replace("{{timestamp}}", timestamp)
         
             params = {
-                "from": "Equipo Chilisites <contacto@chilisites.com>",
+                "from": "Equipo 🌶️Chilisites <contacto@chilisites.com>",
                 "to": request.json["fromEmail"],
                 "subject": "Muchas gracias por el contacto!",
                 "html": email_template
@@ -183,7 +177,9 @@ def send_email_to_chilisites():
         
         print(data.get("fromSubscriptionStatus"))
         
-        file_path = os.path.join(os.path.dirname(__file__), "templates", "email-to-chilisites.html")
+        file_path = os.path.join(os.path.dirname(__file__), "templates", "intern-email", "intern-email.html")
+        
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         with open(file_path, "r", encoding="utf-8") as file:
             email_template = file.read()
@@ -191,13 +187,14 @@ def send_email_to_chilisites():
             email_template = email_template.replace("{{fromEmail}}",              data.get("fromEmail", "➖"))
             email_template = email_template.replace("{{fromPhone}}",              data.get("fromPhone", "➖"))
             email_template = email_template.replace("{{fromType}}",               data.get("fromType", "➖"))
-            email_template = email_template.replace("{{fromSubscriptionStatus}}", "✅" if data.get("fromSubscriptionStatus") else "❌")
+            # email_template = email_template.replace("{{fromSubscriptionStatus}}", "✅" if data.get("fromSubscriptionStatus") else "❌")
             email_template = email_template.replace("{{fromMessage}}",            data.get("fromMessage", "➖"))
+            email_template = email_template.replace("{{timestamp}}", timestamp)
             
             params = {
                 "from": "contacto@chilisites.com",
-                "to": ["jrdelriodom@gmail.com", "francisca.campama@gmail.com", "contacto@chilisites.com"],
-                "subject": "Contacto Chilisites",
+                "to": ["contacto@chilisites.com"],
+                "subject": "Contacto Chilisites Web",
                 "html": email_template
             }
         
@@ -211,4 +208,5 @@ def send_email_to_chilisites():
         
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5001, debug=True)
+

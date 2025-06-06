@@ -1,0 +1,62 @@
+<mjml>
+  <mj-body background-color="#f4f4f4">
+    <!-- Header Section -->
+    <mj-section background-color="#222832">
+      <mj-column>
+        <mj-text align="center" color="#ffffff" font-size="24px" font-weight="bold">
+          ¡Gracias por tu mensaje! 🙏
+        </mj-text>
+        <mj-text align="center" color="#ffffff" font-size="18px">
+          Nos encanta saber de ti 💌
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Body Section -->
+    <mj-section background-color="#ffffff">
+      <mj-column>
+        <mj-text font-size="18px">
+          ¡Hola <strong>{{from_name}}</strong>! 👋
+        </mj-text>
+        
+        <mj-text font-size="16px">
+          ¡Gracias por ponerte en contacto con nosotros! En Chilisites, valoramos mucho tu interés y nos encanta saber más sobre ti y tu proyecto. Te responderemos en un plazo máximo de 24 horas. Si por alguna razón no hemos podido responderte en ese tiempo, ¡te daremos un 10% de descuento en nuestros servicios! 🎉
+        </mj-text>
+
+        <mj-text font-size="16px">
+          Mientras tanto, si tienes alguna pregunta urgente o necesitas aclarar algo, ¡no dudes en escribirnos por WhatsApp! 💬
+        </mj-text>
+
+        <mj-button background-color="#573ae7" border-radius="12px"color="#ffffff" href="https://wa.me/56984138467" font-size="16px" padding="10px" align="center">
+          ¡Habla con Raimundo! 📲
+        </mj-button>
+        <mj-button background-color="#573ae7" border-radius="12px"color="#ffffff" href="https://wa.me/56965669585" font-size="16px" padding="10px" align="center">
+          ¡Habla con Francisca! 📲
+        </mj-button>
+        
+       
+
+       
+        
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer Section -->
+    <mj-section background-color="#222832">
+      <mj-column>
+        <mj-image
+          src="https://res.cloudinary.com/dcvtdp27p/image/upload/v1748273846/logo-chilisites_1_qykshk.png"
+          alt="Chilisites Logo"
+          width="150px"
+          align="center"
+        />
+        <mj-text align="center" color="#ffffff" font-size="14px">
+          ¡Estamos emocionados de trabajar contigo! 🚀
+        </mj-text>
+        <mj-text align="center" color="#ffffff" font-size="14px">
+          Formulario de Contacto - Chilisites
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

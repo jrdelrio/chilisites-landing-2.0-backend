@@ -1,0 +1,73 @@
+<mjml>
+  <mj-body background-color="#f4f4f4">
+    <!-- Header Section -->
+    <mj-section background-color="#dcb5f4">
+      <mj-column>
+        <mj-text align="center" color="#573ae7" font-size="24px" font-weight="bold">
+          ¡Nuevo Mensaje de Contacto!
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Body Section -->
+    <mj-section background-color="#ffffff">
+      <mj-column>
+        <mj-text font-size="18px">
+          Hola equipo de Chilisites,
+        </mj-text>
+        
+        <mj-text font-size="16px">
+          Has recibido un nuevo mensaje de <strong>{{from_name}}</strong>.
+        </mj-text>
+        <mj-text>
+        Aquí están los detalles:
+        </mj-text>
+
+
+        <mj-table font-size="16px" cellpadding="5">
+          <tr>
+            <td style="font-weight: bold; color: #573ae7">Nombre:</td>
+            <td>{{from_name}}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; color: #573ae7">Correo electrónico:</td>
+            <td>{{from_email}}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; color: #573ae7">Teléfono:</td>
+            <td>{{from_phone}}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; color: #573ae7">Tipo de proyecto:</td>
+            <td>{{from_type}}</td>
+          </tr>
+     
+          <tr>
+            <td style="font-weight: bold; color: #573ae7">Mensaje:</td>
+            <td style="color: #573ae7;">{{from_message}}</td>
+          </tr>
+        </mj-table>
+
+        <mj-text font-size="16px">
+          <strong style="color: #573ae7">Fecha y Hora:</strong> {{timestamp}}
+        </mj-text>
+        
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer Section -->
+    <mj-section background-color="#dcb5f4">
+      <mj-column>
+      <mj-image
+          src="https://res.cloudinary.com/dcvtdp27p/image/upload/v1748273846/logo-chilisites_1_qykshk.png"
+          alt="Chilisites Logo"
+          width="150px"
+          align="center"
+          />
+        <mj-text align="center" color="#573ae7" font-size="14px">
+          Formulario de Contacto - Chilisites
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
