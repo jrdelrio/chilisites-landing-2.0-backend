@@ -141,7 +141,7 @@ def send_email_to_leed():
         resend.api_key = os.environ["RESEND_API_KEY"]
         data = request.json
         
-        file_path = os.path.join(os.path.dirname(__file__), "templates", "email-thanks.html")
+        file_path = os.path.join(os.path.dirname(__file__), "templates", "thanks-email", "thanks-email.html")
         
         # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
@@ -171,24 +171,29 @@ def send_email_to_leed():
 
 @app.route("/send-email-to-chilisites", methods=["POST"])
 def send_email_to_chilisites():
+    
     try:
         resend.api_key = os.environ["RESEND_API_KEY"]
         data = request.json
         
-        print(data.get("fromSubscriptionStatus"))
-        
         file_path = os.path.join(os.path.dirname(__file__), "templates", "intern-email", "intern-email.html")
         
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        possible_fields = {
+            "{{from_name}}": data["fromName"], 
+            "{{from_email}}": data["fromEmail"], 
+            "{{from_phone}}": data["fromPhone"], 
+            "{{from_type}}": data["fromType"], 
+            "{{from_message}}": data["fromMessage"]
+        }        
         
         with open(file_path, "r", encoding="utf-8") as file:
             email_template = file.read()
-            email_template = email_template.replace("{{fromName}}",               data.get("fromName", "➖"))
-            email_template = email_template.replace("{{fromEmail}}",              data.get("fromEmail", "➖"))
-            email_template = email_template.replace("{{fromPhone}}",              data.get("fromPhone", "➖"))
-            email_template = email_template.replace("{{fromType}}",               data.get("fromType", "➖"))
-            # email_template = email_template.replace("{{fromSubscriptionStatus}}", "✅" if data.get("fromSubscriptionStatus") else "❌")
-            email_template = email_template.replace("{{fromMessage}}",            data.get("fromMessage", "➖"))
+            
+            for placeholder, value in possible_fields.items():
+                email_template = email_template.replace(placeholder, value)
+                
             email_template = email_template.replace("{{timestamp}}", timestamp)
             
             params = {
@@ -205,8 +210,7 @@ def send_email_to_chilisites():
         return jsonify({"error": str(e)}), 500
     
     return {"email": email}
-        
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
